@@ -86,8 +86,12 @@ public class Pokemon {
     }
 
     public int getDefensa() {
-        return defensa;
+    if (habilidadActiva && habilidad.getEfecto().equalsIgnoreCase("defensa")) {
+        return defensa + habilidad.getValor();
     }
+    return defensa;
+}
+
 
     public boolean isHabilidadActiva() {
         return habilidadActiva;

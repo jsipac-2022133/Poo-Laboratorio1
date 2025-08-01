@@ -2,7 +2,6 @@ package vista;
 
 import modelo.*;
 import controlador.ControladorBatalla;
-
 import java.util.Scanner;
 
 public class Main {
@@ -31,11 +30,28 @@ public class Main {
             System.out.println((i + 1) + ". " + disponibles[i].getNombre() + " (" + disponibles[i].getTipo() + ")");
         }
 
-        System.out.println("\nJames, elige tus 4 Pokémon:");
-        seleccionarEquipo(sc, disponibles, yaElegidos, equipoJames);
+        int seleccionadosJames = 0;
+        int seleccionadosBrian = 0;
+        boolean turnoJames = true;
 
-        System.out.println("\nBrian, elige tus 4 Pokémon:");
-        seleccionarEquipo(sc, disponibles, yaElegidos, equipoBrian);
+        while (seleccionadosJames < 4 || seleccionadosBrian < 4) {
+            System.out.print((turnoJames ? "\nJames" : "Brian") + ", elige un número (1-10): ");
+            int opcion = sc.nextInt();
+
+            if (opcion >= 1 && opcion <= 10 && !yaElegidos[opcion - 1]) {
+                if (turnoJames && seleccionadosJames < 4) {
+                    equipoJames[seleccionadosJames] = disponibles[opcion - 1];
+                    seleccionadosJames++;
+                } else if (!turnoJames && seleccionadosBrian < 4) {
+                    equipoBrian[seleccionadosBrian] = disponibles[opcion - 1];
+                    seleccionadosBrian++;
+                }
+                yaElegidos[opcion - 1] = true;
+                turnoJames = !turnoJames; 
+            } else {
+                System.out.println("Opción inválida o ya elegida.");
+            }
+        }
 
         Entrenador james = new Entrenador("James");
         for (int i = 0; i < 4; i++) {
@@ -85,20 +101,5 @@ public class Main {
         }
 
         sc.close();
-    }
-
-    public static void seleccionarEquipo(Scanner sc, Pokemon[] disponibles, boolean[] yaElegidos, Pokemon[] equipo) {
-        int seleccionados = 0;
-        while (seleccionados < 4) {
-            System.out.print("Elige un número (1-10): ");
-            int opcion = sc.nextInt();
-            if (opcion >= 1 && opcion <= 10 && !yaElegidos[opcion - 1]) {
-                equipo[seleccionados] = disponibles[opcion - 1];
-                yaElegidos[opcion - 1] = true;
-                seleccionados++;
-            } else {
-                System.out.println("Opción inválida o ya elegida.");
-            }
-        }
     }
 }
